@@ -14,7 +14,7 @@
 # most recent version of that image when you build your Dockerfile.
 # If reproducability is important, consider using a versioned tag
 # (e.g., alpine:3.17.2) or SHA (e.g., alpine@sha256:c41ab5c992deb4fe7e5da09f67a8804a46bd0592bfdf0b1847dde0e0889d2bff).
-FROM ubuntu:22.04
+FROM ubuntu/mysql:8.0-20.04_beta
 
 
 COPY package.json package.json
@@ -38,15 +38,7 @@ ENV PATH=$PATH:/root/.nvm/versions/node/v12.14.1/bin
 
 RUN  printf '%s\n' "mysql-apt-config mysql-apt-config/select-server select mysql-8.0"  | debconf-set-selections
 
-RUN wget "https://dev.mysql.com/get/mysql-apt-config_0.8.14-1_all.deb" \
-	&& dpkg -i mysql-apt-config_0.8.14-1_all.deb
 
-RUN export DEBIAN_FRONTEND="noninteractive" \
-	&& printf '%s\n' "mysql-community-server mysql-community-server/re-root-pass password root"  | debconf-set-selections  \
-	&& printf '%s\n' "myvsql-community-server mysql-community-server/root-pass password root"  | debconf-set-selections  \
-	&& printf '%s\n' "mysql-server mysql-server/root_password password root"  | debconf-set-selections \
-	&& printf '%s\n' "mysql-server mysql-server/root_password_again password root" | debconf-set-selections \
-	&& apt-get -y install mysql-server
 
 SHELL ["/bin/bash", "--login", "-i", "-c"]
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash

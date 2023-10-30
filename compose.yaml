@@ -11,6 +11,9 @@ services:
   app:
     stdin_open: true
     tty: true
+    environment:
+        - MYSQL_ROOT_PASSWORD=root
+    
     build:
       context: .
     # If your application exposes a port, uncomment the following lines and change
